@@ -32,6 +32,11 @@ register_activation_hook( __FILE__, 'rangement_db_category_table_create' );
 // Register the deactivation hook
 register_deactivation_hook( __FILE__, 'rangement_db_category_table_remove' );
 
+// Register the activation hook
+register_activation_hook( __FILE__, 'sync_products_informetion_db_active' );
+// Register the deactivation hook
+register_deactivation_hook( __FILE__, 'sync_products_informetion_table_remove' );
+
 //sync table require 
 require_once PLUGIN_PATH . '/init/sync_proudcts_db.php';
 //sync product shortcode
@@ -40,3 +45,7 @@ require_once PLUGIN_PATH . '/init/sync_products_shortcode.php';
 require_once PLUGIN_PATH . '/init/sync_category_db.php';
 
 require_once PLUGIN_PATH . '/init/sync_category_shortcode.php';
+
+require_once PLUGIN_PATH . '/init/sync_product_informetion_db.php';
+
+require_once PLUGIN_PATH . '/init/sync_products_informetion_shortcode.php';
