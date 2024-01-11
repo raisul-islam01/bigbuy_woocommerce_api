@@ -9,11 +9,12 @@ function sync_products_informetion_db_active() {
 
     $sql = "CREATE TABLE IF NOT EXISTS $table_name (
         id INT AUTO_INCREMENT,
-        operation_type VARCHAR(255) NOT NULL,
-        operation_value TEXT NOT NULL,
-        status VARCHAR(255) NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        product_name VARCHAR(255) NOT NULL,
+        sku VARCHAR(255) NOT NULL,
+        product_dac VARCHAR(255) NOT NULL,
+        product_url VARCHAR(255) NOT NULL,
+        iso_code VARCHAR(255) NOT NULL,
+        dateUpd TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
         PRIMARY KEY (id)
     ) $charset_collate;";

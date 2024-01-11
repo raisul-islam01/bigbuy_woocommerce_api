@@ -33,29 +33,43 @@ function insert_products_to_db_callback() {
     if ($api_response) {
         $products = json_decode($api_response, true);
 
+        // echo is_array($products) && count($products);
+        // echo "<pre>";
+        // print_r($products);
+        // echo "</pre>";
+
         if (is_array($products)) {
             global $wpdb;
             $table_name = $wpdb->prefix . 'sync_products';
             $wpdb->query("TRUNCATE TABLE $table_name");
 
-            // Insert to database
+
+            //Insert to database
             foreach ($products as $product) {
-                $product_data = json_encode($product);
+                // Assuming $product contains the fields you want to insert
+                $product_data = [
+                    'product_sku' => isset($product['sku']) ? $product['sku'] : '',
+                    'product_weight' => isset($product['weight']) ? $product['weight'] : '',
+                    'product_height' => isset($product['height']) ? $product['height'] : '',
+                    'product_width' => isset($product['width']) ? $product['width'] : '',
+                    'product_category' => isset($product['category']) ? $product['category'] : '',
+                ];
+
                 $wpdb->insert(
                     $table_name,
-                    [
-                        'operation_type' => 'product_create',
-                        'operation_value' => $product_data,
-                        'status' => 'pending',
-                    ]
+                    $product_data
                 );
             }
 
+          
+
             echo '<h4>Products inserted successfully</h4>';
-        }
+        } 
     } 
 
     return ob_get_clean();
 }
+
+
 
 

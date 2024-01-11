@@ -9,11 +9,13 @@ function rangement_db_products_table_create() {
 
     $sql = "CREATE TABLE IF NOT EXISTS $table_name (
         id INT AUTO_INCREMENT,
-        operation_type VARCHAR(255) NOT NULL,
-        operation_value TEXT NOT NULL,
-        status VARCHAR(255) NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        product_sku VARCHAR(255) NOT NULL,
+        product_weight TEXT NOT NULL,
+        product_height TEXT NOT NULL,
+        product_width TEXT NOT NULL,
+        product_category VARCHAR(255) NOT NULL,
+        dateAdd TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        dateUpd TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
         PRIMARY KEY (id)
     ) $charset_collate;";

@@ -35,25 +35,34 @@ function insert_products_info_db_callback() {
             $table_name = $wpdb->prefix . 'sync_products_info';
             $wpdb->query("TRUNCATE TABLE $table_name");
 
-            // Insert to database
+
+            //Insert to database
             foreach ($products as $product) {
-                $product_data = json_encode($product);
+                // Assuming $product contains the fields you want to insert
+                $product_data = [
+                    'sku' => isset($product['sku']) ? $product['sku'] : '',
+                    'product_name' => isset($product['name']) ? $product['name'] : '',
+                    'product_dac' => isset($product['description']) ? $product['description'] : '',
+                    'product_url' => isset($product['url']) ? $product['url'] : '',
+                    'iso_code' => isset($product['isoCode']) ? $product['isoCode'] : '',
+                ];
+
                 $wpdb->insert(
                     $table_name,
-                    [
-                        'operation_type' => 'product_create',
-                        'operation_value' => $product_data,
-                        'status' => 'pending',
-                    ]
+                    $product_data
                 );
             }
 
-            echo '<h4>Products information inserted successfully</h4>';
-        }
+          
+
+            echo '<h4>Products informetion inserted successfully</h4>';
+        } 
     } 
 
     return ob_get_clean();
 }
+
+
 add_shortcode('insert_product_info', 'insert_products_info_db_callback');
 
 
