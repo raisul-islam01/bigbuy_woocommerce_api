@@ -52,7 +52,12 @@ function insert_products_to_db_callback() {
                     'product_weight' => isset($product['weight']) ? $product['weight'] : '',
                     'product_height' => isset($product['height']) ? $product['height'] : '',
                     'product_width' => isset($product['width']) ? $product['width'] : '',
-                    'product_category' => isset($product['category']) ? $product['category'] : '',
+                    'category_code' => isset($product['category']) ? $product['category'] : '',
+                    'depth' => isset($product['depth']) ? $product['depth'] : '',
+                    'wholesale_price' => isset($product['wholesalePrice']) ? $product['wholesalePrice'] : '',
+                    'retail_price' => isset($product['retailPrice']) ? $product['retailPrice'] : '',
+                    'taxonomy_code' => isset($product['taxonomy']) ? $product['taxonomy'] : '',
+                    'tax_rate' => isset($product['taxRate']) ? $product['taxRate'] : '',
                 ];
 
                 $wpdb->insert(
@@ -61,15 +66,54 @@ function insert_products_to_db_callback() {
                 );
             }
 
-          
-
             echo '<h4>Products inserted successfully</h4>';
-        } 
-    } 
+        }
+    }
 
     return ob_get_clean();
 }
 
+// Function to convert array to XML node
+function array_to_xml($xml, $data) {
+    foreach ($data as $key => $value) {
+        if (is_array($value)) {
+            $subNode = $xml->addChild($key);
+            array_to_xml($subNode, $value);
+        } else {
+            $xml->addChild($key, htmlspecialchars($value));
+        }
+    }
+}
+
+// Shortcode to generate XML and provide download link
+add_shortcode('insert_products_db_download', 'generate_products_data_xml_download');
+function generate_products_data_xml_download() {
+    ob_start();
+    $api_response = bigbuy_fetch_all_products();
+
+    if ($api_response) {
+        $products = json_decode($api_response, true);
+
+        if (is_array($products)) {
+            // Generate XML for product information
+            $xml = new SimpleXMLElement('<products_information></products_information>');
+            foreach ($products as $product) {
+                $productNode = $xml->addChild('product_info');
+                array_to_xml($productNode, $product);
+            }
+
+            // Save XML to a file
+            $xmlFilePath = 'products_data.xml';
+            $xml->asXML($xmlFilePath);
+
+            // Provide a download link for the XML file
+            echo '<h4>Products data generated successfully</h4>';
+            echo '<a href="' . site_url('/') . $xmlFilePath . '" download>Download Products XML</a>';
+        }
+    }
+
+    return ob_get_clean();
+}
 
 
 

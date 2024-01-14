@@ -55,15 +55,46 @@ function insert_products_info_db_callback() {
 
           
 
-            echo '<h4>Products informetion inserted successfully</h4>';
+            echo '<h4>Products information inserted successfully</h4>';
         } 
     } 
 
     return ob_get_clean();
 }
-
-
 add_shortcode('insert_product_info', 'insert_products_info_db_callback');
+
+
+//xml file 
+function generate_products_info_xml() {
+    $api_response = bigbuy_product_information();
+
+    if ($api_response) {
+        $products = json_decode($api_response, true);
+
+        if (is_array($products)) {
+            // Generate XML for product information
+            $xml = new SimpleXMLElement('<products_information></products_information>');
+            foreach ($products as $product) {
+                $productNode = $xml->addChild('product_info');
+                $productNode->addChild('sku', isset($product['sku']) ? $product['sku'] : '');
+                $productNode->addChild('product_name', isset($product['name']) ? $product['name'] : '');
+                $productNode->addChild('product_desc', isset($product['description']) ? $product['description'] : '');
+                $productNode->addChild('product_url', isset($product['url']) ? $product['url'] : '');
+                $productNode->addChild('iso_code', isset($product['isoCode']) ? $product['isoCode'] : '');
+            }
+
+            // Save XML to a file
+            $xmlFilePath = 'products_information.xml';
+            $xml->asXML($xmlFilePath);
+
+            // Provide a download link for the XML file
+            echo '<h4>Products information inserted successfully</h4>';
+            echo '<a href="' . site_url('/') . $xmlFilePath . '" download>Download Products Information XML</a>';
+        } 
+    }
+}
+
+add_shortcode('insert_product_info', 'generate_products_info_xml');
 
 
 

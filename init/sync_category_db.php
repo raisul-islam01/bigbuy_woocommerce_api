@@ -9,6 +9,7 @@ function rangement_db_category_table_create() {
 
     $sql = "CREATE TABLE IF NOT EXISTS $table_name (
         id INT AUTO_INCREMENT,
+        category_id VARCHAR(255) NOT NULL,
         category_name VARCHAR(255) NOT NULL,
         category_url VARCHAR(255) NOT NULL,
         parent_category VARCHAR(255) NOT NULL,

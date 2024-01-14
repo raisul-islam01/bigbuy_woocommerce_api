@@ -13,7 +13,12 @@ function rangement_db_products_table_create() {
         product_weight TEXT NOT NULL,
         product_height TEXT NOT NULL,
         product_width TEXT NOT NULL,
-        product_category VARCHAR(255) NOT NULL,
+        depth VARCHAR(255) NOT NULL,
+        wholesale_price VARCHAR(255) NOT NULL,
+        retail_price VARCHAR(255) NOT NULL,
+        taxonomy_code VARCHAR(255),
+        category_code VARCHAR(255),
+        tax_rate VARCHAR(255),
         dateAdd TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         dateUpd TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
